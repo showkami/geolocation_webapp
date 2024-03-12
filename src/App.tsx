@@ -1,9 +1,18 @@
 import React from 'react';
+import {createTheme, CssBaseline, ThemeProvider} from "@mui/material";
+import Geolocation from "./geolocation/Geolocation";
 
-function App() {
+const App = () => {
+  const theme = createTheme({palette: {mode: 'light'}});
   return (
-    <>"hello"</>
-  );
+    <>
+      <ThemeProvider theme={theme}>
+        <CssBaseline />
+
+        <Geolocation />
+      </ThemeProvider>
+    </>
+  )
 }
 
 export default App;
