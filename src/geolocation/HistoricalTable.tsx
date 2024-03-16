@@ -15,17 +15,12 @@ export default function HistoricalTable(props: HistoricalTableProps){
         <Table size={"small"} stickyHeader>
           <TableHead>
             <TableRow>
-              <TableCell align={"center"} colSpan={1}></TableCell>
-              <TableCell align={"center"} colSpan={3}> 位置情報 </TableCell>
-              <TableCell align={"center"} colSpan={2}> 精度 </TableCell>
-            </TableRow>
-            <TableRow>
               <TableCell> 時刻 </TableCell>
-              <TableCell> 緯度 </TableCell>
-              <TableCell> 経度 </TableCell>
-              <TableCell> 高さ </TableCell>
-              <TableCell> 水平精度 </TableCell>
-              <TableCell> 高さ精度 </TableCell>
+              <TableCell> 緯度[°] </TableCell>
+              <TableCell> 経度[°] </TableCell>
+              <TableCell> 高さ[m] </TableCell>
+              <TableCell> 水平精度[m] </TableCell>
+              <TableCell> 高さ精度[m] </TableCell>
             </TableRow>
           </TableHead>
           <TableBody>

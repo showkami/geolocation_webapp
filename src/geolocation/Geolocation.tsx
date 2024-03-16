@@ -6,6 +6,7 @@ import {
 } from "@mui/material";
 import {PhaseSpace} from "./model";
 import HistoricalTable from "./HistoricalTable";
+import AltitudeChart from "./AltitudeChart";
 
 
 
@@ -64,8 +65,6 @@ export default function Geolocation(){
   return (
 
     <div>
-      <h1>Geolocation</h1>
-
       {
         isGettingGpsInfo ?
           (
@@ -81,6 +80,7 @@ export default function Geolocation(){
           : <> <CircularProgress variant={"determinate"} value={100}/> </>
       }
 
+      <AltitudeChart gpsInfoList={gpsInfoList} />
       <HistoricalTable gpsInfoList={gpsInfoList} />
 
     </div>
