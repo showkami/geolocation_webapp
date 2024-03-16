@@ -13,13 +13,16 @@ import AltitudeChart from "./AltitudeChart";
 
 
 export default function Geolocation(){
+  console.log("Geolocation is rendering")
   const [isGpsFetching, gpsFetchStartTime, gpsInfo] = useGps();
-  const gpsInfoList = useGpsTimeseries(gpsInfo);
-
+  console.log("isGpsFetching=", isGpsFetching);
+  // const gpsInfoList = useGpsTimeseries(gpsInfo);
+  const gpsInfoList: PhaseSpace[] = [];
 
   return (
 
     <div>
+      {gpsInfo.coordinates?.latitude}
       {
         isGpsFetching ?
           (

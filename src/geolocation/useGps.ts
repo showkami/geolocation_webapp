@@ -1,5 +1,5 @@
 import {PhaseSpace} from "./model";
-import {useState} from "react";
+import {useEffect, useState} from "react";
 import moment from "moment/moment";
 
 export default function useGps(): [boolean, moment.Moment | undefined, PhaseSpace] {
@@ -7,31 +7,31 @@ export default function useGps(): [boolean, moment.Moment | undefined, PhaseSpac
   const [isFetching, setIsFetching] = useState<boolean>(false);
   const [fetchStartTime, setFetchStartTime] = useState<moment.Moment | undefined>(undefined);
 
-  setIsFetching(true);
-  setFetchStartTime(moment());
-
-  navigator.geolocation.getCurrentPosition(
-    (position) => {
-      const gottenGpsInfo: PhaseSpace = {
-        timestamp: moment(position.timestamp),
-        coordinates: {
-          latitude: position.coords.latitude,
-          longitude: position.coords.longitude,
-          altitude: position.coords.altitude || undefined,
-          xyAccuracy: position.coords.accuracy,
-          zAccuracy: position.coords.altitudeAccuracy || undefined,
-        },
-        velocity: position.coords.speed !== null ? {
-          heading: (position.coords.speed !== 0 && position.coords.heading !== null) ? position.coords.heading : undefined,
-          speed: position.coords.speed,
-        } : undefined
+  useEffect(() => {
+    setIsFetching(true);
+    setFetchStartTime(moment());
+    navigator.geolocation.getCurrentPosition(
+      (position) => {
+        const gottenGpsInfo: PhaseSpace = {
+          timestamp: moment(position.timestamp),
+          coordinates: {
+            latitude: position.coords.latitude,
+            longitude: position.coords.longitude,
+            altitude: position.coords.altitude || undefined,
+            xyAccuracy: position.coords.accuracy,
+            zAccuracy: position.coords.altitudeAccuracy || undefined,
+          },
+          velocity: position.coords.speed !== null ? {
+            heading: (position.coords.speed !== 0 && position.coords.heading !== null) ? position.coords.heading : undefined,
+            speed: position.coords.speed,
+          } : undefined
+        }
+        setIsFetching(false);
+        setFetchStartTime(undefined);
+        setGpsInfo(gottenGpsInfo);
       }
-      setIsFetching(false);
-      setFetchStartTime(undefined);
-      setGpsInfo(gottenGpsInfo);
-    }
-  );
+    );
+  }, []);
 
-  console.log("useGps returning: ", [isFetching, fetchStartTime, gpsInfo]);
   return [isFetching, fetchStartTime, gpsInfo];
 }
