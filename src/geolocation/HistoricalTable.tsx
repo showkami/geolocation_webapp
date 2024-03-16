@@ -6,7 +6,7 @@ type HistoricalTableProps = {
   gpsInfoList: PhaseSpace[]
 }
 
-export default function (props: HistoricalTableProps){
+export default function HIstoricalTable(props: HistoricalTableProps){
   const sortDescByTime = (a: PhaseSpace, b: PhaseSpace) => {return b.timestamp.diff(a.timestamp)};
   const gpsInfoList: PhaseSpace[] = props.gpsInfoList.sort(sortDescByTime);
   return (
