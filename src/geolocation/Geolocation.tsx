@@ -2,14 +2,9 @@ import React, {useEffect, useState} from "react";
 import moment from "moment";
 import {
   CircularProgress, Grid,
-  Table,
-  TableBody,
-  TableCell,
-  TableContainer,
-  TableHead,
-  TableRow, Typography
+  Typography
 } from "@mui/material";
-import {Coordinates, Velocity, PhaseSpace} from "./model";
+import {PhaseSpace} from "./model";
 import HistoricalTable from "./HistoricalTable";
 
 

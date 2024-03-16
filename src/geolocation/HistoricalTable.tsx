@@ -13,7 +13,7 @@ export default function (props: HistoricalTableProps){
     <TableContainer>
         <Table size={"small"}>
           <TableHead>
-            <TableCell> Timestamp </TableCell>
+            <TableCell> 時刻 </TableCell>
             <TableCell> 緯度 </TableCell>
             <TableCell> 経度 </TableCell>
             <TableCell> 高さ </TableCell>
@@ -23,7 +23,7 @@ export default function (props: HistoricalTableProps){
               gpsInfoList.map((record) => {
                 return (
                   <TableRow>
-                    <TableCell> {record.timestamp.format("YYYY-MM-DD HH:MM:SS")} </TableCell>
+                    <TableCell> {record.timestamp.format("HH:MM:SS")} </TableCell>
                     <TableCell> {record.coordinates.latitude} </TableCell>
                     <TableCell> {record.coordinates.longitude} </TableCell>
                     <TableCell> {record.coordinates.altitude} </TableCell>
