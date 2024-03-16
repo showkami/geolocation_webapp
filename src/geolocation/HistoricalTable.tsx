@@ -1,4 +1,4 @@
-import {Table, TableBody, TableCell, TableContainer, TableHead, TableRow} from "@mui/material";
+import {Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow} from "@mui/material";
 import React from "react";
 import {PhaseSpace} from "./model";
 
@@ -10,8 +10,9 @@ export default function HistoricalTable(props: HistoricalTableProps){
   const sortDescByTime = (a: PhaseSpace, b: PhaseSpace) => {return b.timestamp.diff(a.timestamp)};
   const gpsInfoList: PhaseSpace[] = props.gpsInfoList.sort(sortDescByTime);
   return (
-    <TableContainer>
-        <Table size={"small"}>
+    <Paper variant={"outlined"}>
+      <TableContainer sx={{maxHeight: 440}}>
+        <Table size={"small"} stickyHeader>
           <TableHead>
             <TableCell> 時刻 </TableCell>
             <TableCell> 緯度 </TableCell>
@@ -23,10 +24,10 @@ export default function HistoricalTable(props: HistoricalTableProps){
               gpsInfoList.map((record) => {
                 return (
                   <TableRow>
-                    <TableCell> {record.timestamp.format("HH:MM:SS")} </TableCell>
-                    <TableCell> {record.coordinates.latitude} </TableCell>
-                    <TableCell> {record.coordinates.longitude} </TableCell>
-                    <TableCell> {record.coordinates.altitude} </TableCell>
+                    <TableCell> {record.timestamp.format("HH:MM:ss.SS")} </TableCell>
+                    <TableCell> {record.coordinates.latitude.toFixed(5)} </TableCell>
+                    <TableCell> {record.coordinates.longitude.toFixed(5)} </TableCell>
+                    <TableCell> {record.coordinates.altitude?.toFixed(2)} </TableCell>
                   </TableRow>
                 )
               })
@@ -34,5 +35,6 @@ export default function HistoricalTable(props: HistoricalTableProps){
           </TableBody>
         </Table>
       </TableContainer>
+    </Paper>
   )
 }
