@@ -30,7 +30,7 @@ type AltitudeChartProps = {
 
 const getChartData = (gpsInfoList: PhaseSpace[]): ChartData<"line"> => {
   const timestamps = gpsInfoList.map((gpsInfo) => {
-    return gpsInfo.timestamp.format("HH:MM:ss");
+    return gpsInfo.timestamp.format("HH:mm:ss");
   });
 
   const altitudesWithAccuracy = gpsInfoList.map(
