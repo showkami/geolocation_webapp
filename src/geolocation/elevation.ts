@@ -1,5 +1,3 @@
-import React, {useMemo, useState} from "react";
-
 const cache: { [key: string]: number } = {};
 
 /**
