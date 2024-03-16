@@ -24,7 +24,9 @@ async function fetchGpsCallback(setIsFetching:Function, setFetchStartTime:Functi
       setIsFetching(false);
       setFetchStartTime(undefined);
       setGpsInfo(gottenGpsInfo);
-    }
+    },
+    (err)=>{},
+    { enableHighAccuracy: true }
   );
 }
 
