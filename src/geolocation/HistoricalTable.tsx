@@ -28,7 +28,7 @@ export default function HistoricalTable(props: HistoricalTableProps){
               gpsInfoList.map((record) => {
                 return (
                   <TableRow>
-                    <TableCell> {record.timestamp.format("HH:MM:ss.SS")} </TableCell>
+                    <TableCell> {record.timestamp.format("HH:mm:ss.SS")} </TableCell>
                     <TableCell> {record.coordinates.latitude.toFixed(5)} </TableCell>
                     <TableCell> {record.coordinates.longitude.toFixed(5)} </TableCell>
                     <TableCell> {record.coordinates.altitude?.toFixed(2)} </TableCell>
