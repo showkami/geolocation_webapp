@@ -5,17 +5,16 @@ import {
   Typography
 } from "@mui/material";
 import {PhaseSpace} from "./model";
-import useGps from "./useGps";
-import useGpsTimeseries from "./useGpsTimeseries";
 import HistoricalTable from "./HistoricalTable";
 import AltitudeChart from "./AltitudeChart";
-import {useGpsByInterval} from "./useGpsByInterval";
+import {useGpsByInterval} from "./gps";
 
 
 
 export default function Geolocation(){
   const [isGpsFetching, gpsFetchStartTime, gpsInfoList] = useGpsByInterval();
   console.log(gpsInfoList)
+
 
   return (
 
