@@ -36,14 +36,16 @@ export function useGpsByInterval(): [boolean, moment.Moment | undefined, PhaseSp
   useEffect(() => {
     // loop()の再帰的な呼び出しで、1秒ごとにfetchGpsCallbackを呼び出す
     // see https://developer.mozilla.org/ja/docs/Web/API/setInterval#%E5%AE%9F%E8%A1%8C%E6%99%82%E9%96%93%E3%82%92%E3%82%A4%E3%83%B3%E3%82%BF%E3%83%BC%E3%83%90%E3%83%AB%E3%82%88%E3%82%8A%E7%A2%BA%E5%AE%9F%E3%81%AB%E7%9F%AD%E3%81%8F%E3%81%99%E3%82%8B
+    let timerId: NodeJS.Timeout;
     (
       function loop() {
-        setTimeout(() => {
+        timerId = setTimeout(() => {
           fetchGpsCallback(setIsFetching, setFetchStartTime, setGpsInfo);
           loop();
         }, 1000);
       }
     )();
+    return () => {clearInterval(timerId);}; // 再レンダーの際にはタイマーをクリーンアップ
   }, []);
 
   const [gpsInfoTimeseries, setGpsInfoTimeseries] = useState<PhaseSpace[]>([]);
