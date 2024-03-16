@@ -3,7 +3,6 @@ import moment from "moment/moment";
 import {PhaseSpace} from "./model";
 
 async function fetchGpsCallback(setIsFetching:Function, setFetchStartTime:Function, setGpsInfo:Function) {
-  console.log("fetchGpsCallback called");
   setIsFetching(true);
   setFetchStartTime(moment());
   navigator.geolocation.getCurrentPosition(

@@ -79,7 +79,6 @@ const getChartData = (gpsInfoList: PhaseSpace[]) => {
 export default function AltitudeChart(props: AltitudeChartProps){
   const sortAscByTime = (a: PhaseSpace, b: PhaseSpace) => {return a.timestamp.diff(b.timestamp)};
   const gpsInfoList: PhaseSpace[] = props.gpsInfoList.sort(sortAscByTime);
-
   const chartData = getChartData(gpsInfoList);
 
   return (

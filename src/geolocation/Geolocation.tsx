@@ -11,8 +11,6 @@ import AltitudeChart from "./AltitudeChart";
 
 export default function Geolocation(){
   const [isGpsFetching, gpsFetchStartTime, gpsInfoList] = useGpsByInterval();
-  console.log(gpsInfoList)
-
 
   return (
 
