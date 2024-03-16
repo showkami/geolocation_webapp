@@ -9,42 +9,10 @@ import {
   TableHead,
   TableRow, Typography
 } from "@mui/material";
+import {Coordinates, Velocity, PhaseSpace} from "./model";
+import HistoricalTable from "./HistoricalTable";
 
-/**
- * Coordinates - 座標およびその精度
- * @property latitude - 緯度
- * @property longitude - 経度
- * @property altitude - 高度 [m]
- * @property xyAccuracy - latitude, longitudeの精度 [m]
- * @property zAccuracy - altitude の精度 [m]
 
- */
-type Coordinates = {
-  latitude: number,
-  longitude: number,
-  altitude?: number,
-  xyAccuracy: number,
-  zAccuracy?: number,
-}
-
-/**
- * Velocity - 速度、すなわち速さと進む方向
- * @property heading - 端末が向かっている方向; 0 - 北, 90 - 東, 180 - 南, 270 - 西 ※speedが0のときはundefinedにする
- * @property speed -
-*/
-type Velocity = {
-  heading?: number,
-  speed: number,
-}
-
-/**
- * PhaseSpace - ある時刻における座標・速度
- */
-type PhaseSpace = {
-  timestamp: moment.Moment,
-  coordinates: Coordinates,
-  velocity?: Velocity,
-}
 
 export default function Geolocation(){
   const [gpsInfo, setGpsInfo] = useState<PhaseSpace | undefined>(undefined);
@@ -118,30 +86,7 @@ export default function Geolocation(){
           : <> <CircularProgress variant={"determinate"} value={100}/> </>
       }
 
-      <TableContainer>
-        <Table>
-          <TableHead>
-            <TableCell> Timestamp </TableCell>
-            <TableCell> 緯度 </TableCell>
-            <TableCell> 経度 </TableCell>
-            <TableCell> 高さ </TableCell>
-          </TableHead>
-          <TableBody>
-            {
-              gpsInfoList.map((record) => {
-                return (
-                  <TableRow>
-                    <TableCell> {record.timestamp.format("YYYY-MM-DD HH:MM:SS")} </TableCell>
-                    <TableCell> {record.coordinates.latitude} </TableCell>
-                    <TableCell> {record.coordinates.latitude} </TableCell>
-                    <TableCell> {record.coordinates.altitude} </TableCell>
-                  </TableRow>
-                )
-              })
-            }
-          </TableBody>
-        </Table>
-      </TableContainer>
+      <HistoricalTable gpsInfoList={gpsInfoList} />
 
     </div>
   )
