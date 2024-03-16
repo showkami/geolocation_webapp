@@ -2,8 +2,8 @@ import {PhaseSpace} from "./model";
 import {useEffect, useState} from "react";
 import moment from "moment/moment";
 
-export default function useGps(): [boolean, moment.Moment | undefined, PhaseSpace] {
-  const [gpsInfo, setGpsInfo] = useState<PhaseSpace>({} as PhaseSpace);
+export default function useGps(): [boolean, moment.Moment | undefined, PhaseSpace | undefined] {
+  const [gpsInfo, setGpsInfo] = useState<PhaseSpace | undefined>(undefined);
   const [isFetching, setIsFetching] = useState<boolean>(false);
   const [fetchStartTime, setFetchStartTime] = useState<moment.Moment | undefined>(undefined);
 
