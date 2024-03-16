@@ -9,30 +9,28 @@ import useGps from "./useGps";
 import useGpsTimeseries from "./useGpsTimeseries";
 import HistoricalTable from "./HistoricalTable";
 import AltitudeChart from "./AltitudeChart";
+import {useGpsByInterval} from "./useGpsByInterval";
 
 
 
 export default function Geolocation(){
-  const [isGpsFetching, gpsFetchStartTime, gpsInfo] = useGps();
-  const gpsInfoList = useGpsTimeseries(gpsInfo);
+  const [isGpsFetching, gpsFetchStartTime, gpsInfoList] = useGpsByInterval();
+  console.log(gpsInfoList)
 
   return (
 
     <div>
       {
-        isGpsFetching ?
-          (
-            <Grid container>
-              <Grid item xs={2}>
-                <CircularProgress />
-              </Grid>
-              <Grid item xs={10}>
-                <Typography>Getting location since {gpsFetchStartTime?.format("HH:MM:SS")}</Typography>
-              </Grid>
-            </Grid>
-          )
-          : <> <CircularProgress variant={"determinate"} value={100}/> </>
+        <Grid container>
+          <Grid item xs={2}>
+            {isGpsFetching ? <CircularProgress /> : <CircularProgress variant={"determinate"} value={100}/>}
+          </Grid>
+          <Grid item xs={10}>
+            {gpsFetchStartTime ? <Typography>Getting location since {gpsFetchStartTime.format("HH:MM:SS")}</Typography> : <></>}
+          </Grid>
+        </Grid>
       }
+
 
       <AltitudeChart gpsInfoList={gpsInfoList} />
       <HistoricalTable gpsInfoList={gpsInfoList} />
