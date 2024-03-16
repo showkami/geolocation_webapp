@@ -1,4 +1,4 @@
-import React, {useEffect, useMemo, useState} from "react";
+import React, {useEffect, useState} from "react";
 import moment from "moment";
 import {
   CircularProgress, Grid,
@@ -46,12 +46,12 @@ type PhaseSpace = {
   velocity?: Velocity,
 }
 
-export default function (){
+export default function Geolocation(){
   const [gpsInfo, setGpsInfo] = useState<PhaseSpace | undefined>(undefined);
   const [gpsInfoList, setGpsInfoList] = useState<(PhaseSpace)[]>([]);
   useEffect(() => {
     if (gpsInfo !== undefined){
-      setGpsInfoList([...gpsInfoList, gpsInfo]);
+      setGpsInfoList((currentList) => [...currentList, gpsInfo]);
     }
   }, [gpsInfo]);
 
