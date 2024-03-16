@@ -14,10 +14,19 @@ export default function HistoricalTable(props: HistoricalTableProps){
       <TableContainer sx={{maxHeight: 440}}>
         <Table size={"small"} stickyHeader>
           <TableHead>
-            <TableCell> 時刻 </TableCell>
-            <TableCell> 緯度 </TableCell>
-            <TableCell> 経度 </TableCell>
-            <TableCell> 高さ </TableCell>
+            <TableRow>
+              <TableCell align={"center"} colSpan={1}></TableCell>
+              <TableCell align={"center"} colSpan={3}> 位置情報 </TableCell>
+              <TableCell align={"center"} colSpan={2}> 精度 </TableCell>
+            </TableRow>
+            <TableRow>
+              <TableCell> 時刻 </TableCell>
+              <TableCell> 緯度 </TableCell>
+              <TableCell> 経度 </TableCell>
+              <TableCell> 高さ </TableCell>
+              <TableCell> 水平精度 </TableCell>
+              <TableCell> 高さ精度 </TableCell>
+            </TableRow>
           </TableHead>
           <TableBody>
             {
@@ -28,6 +37,8 @@ export default function HistoricalTable(props: HistoricalTableProps){
                     <TableCell> {record.coordinates.latitude.toFixed(5)} </TableCell>
                     <TableCell> {record.coordinates.longitude.toFixed(5)} </TableCell>
                     <TableCell> {record.coordinates.altitude?.toFixed(2)} </TableCell>
+                    <TableCell> {record.coordinates.xyAccuracy.toFixed(2)} </TableCell>
+                    <TableCell> {record.coordinates.zAccuracy?.toFixed(2)} </TableCell>
                   </TableRow>
                 )
               })
