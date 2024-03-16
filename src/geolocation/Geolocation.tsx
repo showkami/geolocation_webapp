@@ -6,7 +6,7 @@ import {
 import {useGpsByInterval} from "./gps";
 import HistoricalTable from "./HistoricalTable";
 import AltitudeChart from "./AltitudeChart";
-
+import DownloadButton from "./DownloadButton";
 
 
 export default function Geolocation(){
@@ -26,9 +26,11 @@ export default function Geolocation(){
         </Grid>
       }
 
+      <DownloadButton gpsInfoList={gpsInfoList} />
 
       <AltitudeChart gpsInfoList={gpsInfoList} />
       <HistoricalTable gpsInfoList={gpsInfoList} />
+
 
     </div>
   )
