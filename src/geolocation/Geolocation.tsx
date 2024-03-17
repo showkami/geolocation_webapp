@@ -7,6 +7,7 @@ import {
 import {useGpsByInterval} from "./gps";
 import HistoricalTable from "./HistoricalTable";
 import AltitudeChart from "./AltitudeChart";
+import Map from "./Map";
 import DownloadButton from "./DownloadButton";
 
 
@@ -41,6 +42,15 @@ export default function Geolocation(){
         </AccordionSummary>
         <AccordionDetails>
           <AltitudeChart gpsInfoList={gpsInfoList} />
+        </AccordionDetails>
+      </Accordion>
+
+      <Accordion defaultExpanded={true}>
+        <AccordionSummary>
+          <Typography variant={"h6"}> Map </Typography>
+        </AccordionSummary>
+        <AccordionDetails>
+          <Map gpsInfoList={gpsInfoList} />
         </AccordionDetails>
       </Accordion>
 
