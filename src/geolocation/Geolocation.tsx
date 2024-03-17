@@ -1,7 +1,8 @@
 import React from "react";
 import {
   CircularProgress, Grid, Switch,
-  Typography
+  Typography,
+  Accordion, AccordionSummary, AccordionDetails
 } from "@mui/material";
 import {useGpsByInterval} from "./gps";
 import HistoricalTable from "./HistoricalTable";
@@ -34,9 +35,23 @@ export default function Geolocation(){
 
       <DownloadButton gpsInfoList={gpsInfoList} />
 
-      <AltitudeChart gpsInfoList={gpsInfoList} />
-      <HistoricalTable gpsInfoList={gpsInfoList} />
+      <Accordion defaultExpanded={true}>
+        <AccordionSummary>
+          <Typography variant={"h6"}> Altitude Chart </Typography>
+        </AccordionSummary>
+        <AccordionDetails>
+          <AltitudeChart gpsInfoList={gpsInfoList} />
+        </AccordionDetails>
+      </Accordion>
 
+      <Accordion defaultExpanded={true}>
+        <AccordionSummary>
+          <Typography variant={"h6"}> Historical Table </Typography>
+        </AccordionSummary>
+        <AccordionDetails>
+          <HistoricalTable gpsInfoList={gpsInfoList} />
+        </AccordionDetails>
+      </Accordion>
 
     </div>
   )
