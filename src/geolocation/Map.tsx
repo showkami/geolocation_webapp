@@ -1,5 +1,6 @@
-import React, {useState} from "react";
-import { MapContainer, TileLayer, CircleMarker, Popup} from "react-leaflet";
+import React, {useEffect, useState} from "react";
+import {MapContainer, TileLayer, CircleMarker, Popup} from "react-leaflet";
+import { Map as LeafletMap } from 'leaflet';
 import {PhaseSpace} from "./model";
 import {
   Paper,
@@ -111,9 +112,15 @@ type MapProps = {
 }
 
 export default function Map(props: MapProps){
+  const [map, setMap] = useState<LeafletMap | null>(null);
   const gpsInfoList: PhaseSpace[] = props.gpsInfoList;
   const mapCenter: LatLngExpression = [35.681236, 139.767125];
-  // TODO: 位置情報更新されたら、それに合わせてマップ中心を変えたい
+  useEffect(() => {
+    if (gpsInfoList.length > 0 && map) {
+      const newCenter: LatLngExpression = [gpsInfoList[0].coordinates.latitude, gpsInfoList[0].coordinates.longitude];
+      map.setView(newCenter, map.getZoom())
+    }
+  }, [map, gpsInfoList]);
 
   const [mapTile, setMapTileName] = useMapTile("国土地理院標準地図")
 
@@ -127,7 +134,7 @@ export default function Map(props: MapProps){
       </ToggleButtonGroup>
 
       <Paper sx={{height: "400px"}}>
-        <MapContainer style={{height: "400px"}} center={mapCenter} zoom={15} scrollWheelZoom={false} >
+        <MapContainer style={{height: "400px"}} center={mapCenter} zoom={15} scrollWheelZoom={false} ref={setMap} >
           <TileLayer
             attribution={mapTile.mapAcknowledge}
             url={mapTile.mapUrl}
