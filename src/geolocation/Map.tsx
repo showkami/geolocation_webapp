@@ -77,6 +77,8 @@ function Markers(props: {gpsInfoList: PhaseSpace[]}){
     <>
       {
       props.gpsInfoList.map((gpsInfo, i) => {
+        const altitude = gpsInfo.coordinates.altitude;
+        const elevation = elevations[i];
         return (
           <CircleMarker
             radius={5}
@@ -99,23 +101,23 @@ function Markers(props: {gpsInfoList: PhaseSpace[]}){
                     <TableRow>
                       <TableCell>GPS標高</TableCell>
                       <TableCell>
-                        {gpsInfo.coordinates.altitude ? (
-                          gpsInfo.coordinates.altitude?.toFixed(2)
-                          + "±" + gpsInfo.coordinates.zAccuracy?.toFixed(2) + "m"
+                        {altitude ? (
+                          altitude.toFixed(2) + "±" + gpsInfo.coordinates.zAccuracy?.toFixed(2) + "m"
                         ): "N/A"}
                       </TableCell>
                     </TableRow>
                     <TableRow>
                       <TableCell>地面標高</TableCell>
-                      <TableCell> {elevations[i]?.toFixed(2) + "m"} </TableCell>
+                      <TableCell> {elevation ? elevation.toFixed(2) + "m" : "N/A"} </TableCell>
                     </TableRow>
                     <TableRow>
                       <TableCell>土被り</TableCell>
                       <TableCell>
                         {
-                          (gpsInfo.coordinates.altitude && elevations[i]) ? (
-                          (elevations[i]?? - gpsInfo.coordinates.altitude).toFixed(2) + "m"
-                        ): "N/A"}
+                          (elevation && altitude) ?
+                            (elevation - altitude).toFixed(2) + "m"
+                            : "N/A"
+                        }
                       </TableCell>
                     </TableRow>
                   </TableBody>
