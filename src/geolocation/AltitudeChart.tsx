@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from "react";
+import React from "react";
 import {
   Chart as ChartJS,
   CategoryScale,
@@ -11,7 +11,7 @@ import {
 } from "chart.js";
 import {Line} from "react-chartjs-2";
 import {PhaseSpace} from "./model";
-import {getElevation, useElevationFromGpsInfoList} from "./elevation";
+import {useElevationFromGpsInfoList} from "./elevation";
 
 ChartJS.register(
   CategoryScale,
