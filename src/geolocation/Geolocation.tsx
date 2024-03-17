@@ -1,6 +1,6 @@
 import React from "react";
 import {
-  CircularProgress, Grid,
+  CircularProgress, Grid, Switch,
   Typography
 } from "@mui/material";
 import {useGpsByInterval} from "./gps";
@@ -10,11 +10,17 @@ import DownloadButton from "./DownloadButton";
 
 
 export default function Geolocation(){
-  const [isGpsFetching, gpsFetchStartTime, gpsInfoList] = useGpsByInterval();
+  const [isContinueFetching, setIsContinueFetching] = React.useState<boolean>(false);
+  const [isGpsFetching, gpsFetchStartTime, gpsInfoList] = useGpsByInterval(isContinueFetching);
 
   return (
 
     <div>
+      <Switch
+        checked={isContinueFetching}
+        onChange={(e) => {setIsContinueFetching(e.target.checked)}}
+      />
+
       {
         <Grid container>
           <Grid item xs={2}>
@@ -28,7 +34,7 @@ export default function Geolocation(){
 
       <DownloadButton gpsInfoList={gpsInfoList} />
 
-      <AltitudeChart gpsInfoList={gpsInfoList} />
+      {/*<AltitudeChart gpsInfoList={gpsInfoList} />*/}
       <HistoricalTable gpsInfoList={gpsInfoList} />
 
 

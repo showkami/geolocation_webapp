@@ -30,7 +30,7 @@ async function fetchGpsCallback(setIsFetching:Function, setFetchStartTime:Functi
   );
 }
 
-export function useGpsByInterval(): [boolean, moment.Moment | undefined, PhaseSpace[]] {
+export function useGpsByInterval(isContinueFetching: boolean): [boolean, moment.Moment | undefined, PhaseSpace[]] {
   const [gpsInfo, setGpsInfo] = useState<PhaseSpace | undefined>(undefined);
   const [isFetching, setIsFetching] = useState<boolean>(false);
   const [fetchStartTime, setFetchStartTime] = useState<moment.Moment | undefined>(undefined);
@@ -42,13 +42,15 @@ export function useGpsByInterval(): [boolean, moment.Moment | undefined, PhaseSp
     (
       function loop() {
         timerId = setTimeout(() => {
-          fetchGpsCallback(setIsFetching, setFetchStartTime, setGpsInfo);
+          if (isContinueFetching) {
+            fetchGpsCallback(setIsFetching, setFetchStartTime, setGpsInfo);
+          }
           loop();
         }, 1000);
       }
     )();
     return () => {clearInterval(timerId);}; // 再レンダーの際にはタイマーをクリーンアップ
-  }, []);
+  }, [isContinueFetching]);
 
   const [gpsInfoTimeseries, setGpsInfoTimeseries] = useState<PhaseSpace[]>([]);
   useEffect(() => {
