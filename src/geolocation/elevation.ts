@@ -16,20 +16,18 @@ export async function getElevation(latitude: number, longitude: number) {
     return cache[positionString]
   } else {
     const url = `https://cyberjapandata2.gsi.go.jp/general/dem/scripts/getelevation.php?lon=${longitude}&lat=${latitude}&outtype=json`;
-    console.warn(`API Fetch Start ==> ${url}`)
-    console.log()
+    console.warn(`API Fetch Start (${positionString}) ==> ${url}`)
     const elevation: number = (await (await fetch(url)).json()).elevation
-    // TODO: なんかもっとちゃんとしたい (こんなawait祭りではなく・・・)
-    // fetch(url).then((response) => {
-    //   response.json().then((data) => {
-    //     setElevation(data.elevation)
-    //   });
-    // });
     if (elevation) cache[positionString] = elevation;
     return elevation
   }
 }
 
+/**
+ * 位置情報のリストを受けとって、それぞれの位置における標高のリストを取得する
+ * @param gpsInfoList
+ * @returns 標高のリスト (gpsInfoListと同じ長さ、同じ順番)
+ */
 export function useElevationFromGpsInfoList(gpsInfoList: PhaseSpace[]) {
   const [elevations, setElevations] = useState<(number | undefined)[]>(
     gpsInfoList.map(() => {return undefined})
