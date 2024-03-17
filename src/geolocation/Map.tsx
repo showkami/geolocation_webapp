@@ -67,7 +67,7 @@ function Markers(props: {gpsInfoList: PhaseSpace[]}){
       return '#ffffff';
     } else {
       const ratio = (altitude - minAltitude) / (maxAltitude - minAltitude);
-      const colorString = '#' + 'ff' + ((1 - ratio) * 256).toString(16) + ((1 - ratio) * 256).toString(16);
+      const colorString = '#ff' + ((1 - ratio) * 256).toString(16) + ((1 - ratio) * 256).toString(16);
       console.log(colorString);
       return colorString;
     }
@@ -109,15 +109,15 @@ function Markers(props: {gpsInfoList: PhaseSpace[]}){
                       <TableCell>地面標高</TableCell>
                       <TableCell> {elevations[i]?.toFixed(2) + "m"} </TableCell>
                     </TableRow>
-                    {/*<TableRow>*/}
-                    {/*  <TableCell>土被り</TableCell>*/}
-                    {/*  <TableCell>*/}
-                    {/*    {*/}
-                    {/*      (gpsInfo.coordinates.altitude && elevations && elevations[i]) ? (*/}
-                    {/*        (elevations[i]? - gpsInfo.coordinates.altitude).toFixed(2) + "m"*/}
-                    {/*    ): "N/A"}*/}
-                    {/*  } </TableCell>*/}
-                    {/*</TableRow>*/}
+                    <TableRow>
+                      <TableCell>土被り</TableCell>
+                      <TableCell>
+                        {
+                          (gpsInfo.coordinates.altitude && elevations[i]) ? (
+                          (elevations[i]?? - gpsInfo.coordinates.altitude).toFixed(2) + "m"
+                        ): "N/A"}
+                      </TableCell>
+                    </TableRow>
                   </TableBody>
                 </Table>
               </TableContainer>
