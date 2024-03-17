@@ -55,6 +55,24 @@ function useMapTile(initialMapTileName: MapTileName) : [MapTile, (mapTile: MapTi
 
 function Markers(props: {gpsInfoList: PhaseSpace[]}){
   const elevations = useElevationFromGpsInfoList(props.gpsInfoList);
+
+  // マーカーの色... 高さによって変えたい
+  const altitudesExcludeUndefined = props.gpsInfoList
+    .map((gpsInfo) => gpsInfo.coordinates.altitude)
+    .filter((altitude) => altitude !== undefined) as number[];
+  const minAltitude = Math.min(...altitudesExcludeUndefined);
+  const maxAltitude = Math.max(...altitudesExcludeUndefined);
+  const getMarkerColor = (altitude: number | undefined): string => {
+    if (altitude === undefined) {
+      return '#ffffff';
+    } else {
+      const ratio = (altitude - minAltitude) / (maxAltitude - minAltitude);
+      const colorString = '#' + 'ff' + ((1 - ratio) * 256).toString(16) + ((1 - ratio) * 256).toString(16);
+      console.log(colorString);
+      return colorString;
+    }
+  }
+
   return (
     <>
       {
@@ -63,7 +81,12 @@ function Markers(props: {gpsInfoList: PhaseSpace[]}){
           <CircleMarker
             radius={5}
             center={[gpsInfo.coordinates.latitude, gpsInfo.coordinates.longitude]}
-            pathOptions={{color: "red"}}  // TODO: 高さ(or土被り)によって色を変えたい
+            pathOptions={{
+              color: "black",
+              opacity: 1,
+              fillColor: getMarkerColor(gpsInfo.coordinates.altitude),
+              fillOpacity: 0.8,
+            }}  // TODO: 高さ(or土被り)によって色を変えたい
           >
             <Popup>
               <TableContainer>
