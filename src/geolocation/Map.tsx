@@ -84,11 +84,11 @@ function Markers(props: {gpsInfoList: PhaseSpace[]}){
             radius={5}
             center={[gpsInfo.coordinates.latitude, gpsInfo.coordinates.longitude]}
             pathOptions={{
-              color: "black",
+              color: getMarkerColor(gpsInfo.coordinates.altitude),
               opacity: 1,
               fillColor: getMarkerColor(gpsInfo.coordinates.altitude),
               fillOpacity: 0.8,
-            }}  // TODO: 高さ(or土被り)によって色を変えたい
+            }}
           >
             <Popup>
               <TableContainer>
