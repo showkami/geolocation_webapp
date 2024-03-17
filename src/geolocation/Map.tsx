@@ -79,8 +79,17 @@ function Markers(props: {gpsInfoList: PhaseSpace[]}){
                     </TableRow>
                     <TableRow>
                       <TableCell>地面標高</TableCell>
-                      <TableCell> {elevations[i]} </TableCell>
+                      <TableCell> {elevations[i]?.toFixed(2) + "m"} </TableCell>
                     </TableRow>
+                    {/*<TableRow>*/}
+                    {/*  <TableCell>土被り</TableCell>*/}
+                    {/*  <TableCell>*/}
+                    {/*    {*/}
+                    {/*      (gpsInfo.coordinates.altitude && elevations && elevations[i]) ? (*/}
+                    {/*        (elevations[i]? - gpsInfo.coordinates.altitude).toFixed(2) + "m"*/}
+                    {/*    ): "N/A"}*/}
+                    {/*  } </TableCell>*/}
+                    {/*</TableRow>*/}
                   </TableBody>
                 </Table>
               </TableContainer>
