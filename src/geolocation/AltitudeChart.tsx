@@ -1,4 +1,4 @@
-import React, {useState} from "react";
+import React, {useEffect, useState} from "react";
 import {
   Chart as ChartJS,
   CategoryScale,
@@ -77,20 +77,33 @@ const getChartData = (gpsInfoList: PhaseSpace[]): ChartData<"line"> => {
   };
 }
 
-const addElevationToChartData = (
+const useChartDataWithElevation = (
   chartData: ChartData<"line">,
   gpsInfoList: PhaseSpace[],
-  elevations: (number | undefined)[],
-  setElevations: Function,
 ) : ChartData<"line"> => {
-  gpsInfoList.forEach((gpsInfo, i) => {
-    getElevation(gpsInfo.coordinates.latitude, gpsInfo.coordinates.longitude)
-      .then((elevation) => {
-        const newElevations = [...elevations];
-        newElevations[i] = elevation;
-        setElevations(newElevations);
-      });
-  });
+  const [elevations, setElevations] = useState<(number | undefined)[]>(
+    gpsInfoList.map(() => {return undefined})
+  )
+  useEffect(() => {
+    gpsInfoList.forEach(
+      (gpsInfo, i) => {
+        // getElevation() の結果を await して、ちゃんと標高帰ってくるのを待ってからsetElevations()したい
+        // ...が、await は async function 内でしか使えない
+        // そこで、「async functionを作ってそれを呼び出す」という形式で記述する
+        // 参考... https://qiita.com/disney_Lady_Pg/items/f54333f7b0d3611e8888
+        const fetchAndSet = async () => {
+          const elevation = await getElevation(gpsInfo.coordinates.latitude, gpsInfo.coordinates.longitude);
+          setElevations((prev) => {
+            const newElevations = [...prev];
+            newElevations[i] = elevation;
+            return newElevations;
+          })
+        }
+        fetchAndSet();
+      }
+    );
+  }, [gpsInfoList]);
+
   const newChartData: ChartData<"line"> = {...chartData};
   newChartData.datasets.push(
     {
@@ -109,8 +122,7 @@ export default function AltitudeChart(props: AltitudeChartProps){
   const gpsInfoList: PhaseSpace[] = props.gpsInfoList.sort(sortAscByTime);
   const chartData = getChartData(gpsInfoList);
 
-  const [elevations, setElevations] = useState<(number | undefined)[]>(gpsInfoList.map((_)=>{return undefined}));
-  const chartDataWithElevation = addElevationToChartData(chartData, gpsInfoList, elevations, setElevations);
+  const chartDataWithElevation = useChartDataWithElevation(chartData, gpsInfoList);
 
   return (
     <Line data={chartDataWithElevation} options={{animation: false}}></Line>

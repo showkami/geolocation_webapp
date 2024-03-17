@@ -34,7 +34,7 @@ export default function Geolocation(){
 
       <DownloadButton gpsInfoList={gpsInfoList} />
 
-      {/*<AltitudeChart gpsInfoList={gpsInfoList} />*/}
+      <AltitudeChart gpsInfoList={gpsInfoList} />
       <HistoricalTable gpsInfoList={gpsInfoList} />
 
 
