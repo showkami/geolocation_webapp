@@ -114,9 +114,11 @@ type MapProps = {
 export default function Map(props: MapProps){
   const [map, setMap] = useState<LeafletMap | null>(null);
   const gpsInfoList: PhaseSpace[] = props.gpsInfoList;
+
   const mapCenter: LatLngExpression = [35.681236, 139.767125];
   useEffect(() => {
-    if (gpsInfoList.length > 0 && map) {
+    if (gpsInfoList.length === 1 && map) {
+      // 最初の1回目の取得のタイミングで、中心を移動する
       const newCenter: LatLngExpression = [gpsInfoList[0].coordinates.latitude, gpsInfoList[0].coordinates.longitude];
       map.setView(newCenter, map.getZoom())
     }
