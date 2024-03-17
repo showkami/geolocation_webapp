@@ -11,7 +11,7 @@ import {
 } from "chart.js";
 import {Line} from "react-chartjs-2";
 import {PhaseSpace} from "./model";
-import {getElevation} from "./elevation";
+import {getElevation, useElevationFromGpsInfoList} from "./elevation";
 
 ChartJS.register(
   CategoryScale,
@@ -81,28 +81,7 @@ const useChartDataWithElevation = (
   chartData: ChartData<"line">,
   gpsInfoList: PhaseSpace[],
 ) : ChartData<"line"> => {
-  const [elevations, setElevations] = useState<(number | undefined)[]>(
-    gpsInfoList.map(() => {return undefined})
-  )
-  useEffect(() => {
-    gpsInfoList.forEach(
-      (gpsInfo, i) => {
-        // getElevation() の結果を await して、ちゃんと標高帰ってくるのを待ってからsetElevations()したい
-        // ...が、await は async function 内でしか使えない
-        // そこで、「async functionを作ってそれを呼び出す」という形式で記述する
-        // 参考... https://qiita.com/disney_Lady_Pg/items/f54333f7b0d3611e8888
-        const fetchAndSet = async () => {
-          const elevation = await getElevation(gpsInfo.coordinates.latitude, gpsInfo.coordinates.longitude);
-          setElevations((prev) => {
-            const newElevations = [...prev];
-            newElevations[i] = elevation;
-            return newElevations;
-          })
-        }
-        fetchAndSet();
-      }
-    );
-  }, [gpsInfoList]);
+  const elevations = useElevationFromGpsInfoList(gpsInfoList);
 
   const newChartData: ChartData<"line"> = {...chartData};
   newChartData.datasets.push(
