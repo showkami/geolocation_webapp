@@ -59,7 +59,7 @@ function Markers(props: {gpsInfoList: PhaseSpace[]}){
       {
       props.gpsInfoList.map((gpsInfo, i) => {
         return (
-          <CircleMarker radius={2} center={[gpsInfo.coordinates.latitude, gpsInfo.coordinates.longitude]}>
+          <CircleMarker radius={5} center={[gpsInfo.coordinates.latitude, gpsInfo.coordinates.longitude]}>
             <Popup>
               <TableContainer>
                 <Table size={"small"}>
