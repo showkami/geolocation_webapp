@@ -13,7 +13,7 @@ import {
 } from "@mui/material";
 import {LatLngExpression} from "leaflet";
 import "leaflet/dist/leaflet.css";  // leafletのcssをインポートしないと表示が崩れる。 see https://qiita.com/honda28/items/e4c73c916e4d9b2ec279#leaflet-%E3%82%B3%E3%83%B3%E3%83%9D%E3%83%BC%E3%83%8D%E3%83%B3%E3%83%88%E3%81%AE%E4%BD%9C%E6%88%90
-import {getElevation, useElevationFromGpsInfoList} from "./elevation";
+import {useElevationFromGpsInfoList} from "./elevation";
 
 type MapTileName = "OpenStreetMap" | "国土地理院標準地図" | "国土地理院淡色地図" | "国土地理院土地条件図"
 type MapTile = {
