@@ -40,7 +40,7 @@ function useMapTile(initialMapTileName: MapTileName) : [MapTile, (mapTile: MapTi
       mapAcknowledge = '出典: <a href="https://maps.gsi.go.jp/development/ichiran.html">国土地理院</a> '
       break;
     case "国土地理院土地条件図":
-      mapUrl = "https://cyberjapandata.gsi.go.jp/xyz/lcmfc/{z}/{x}/{y}.png"
+      mapUrl = "https://cyberjapandata.gsi.go.jp/xyz/lcm25k_2012/{z}/{x}/{y}.png"
       mapAcknowledge = '出典: <a href="https://maps.gsi.go.jp/development/ichiran.html">国土地理院</a> '
       break;
   }
@@ -59,7 +59,11 @@ function Markers(props: {gpsInfoList: PhaseSpace[]}){
       {
       props.gpsInfoList.map((gpsInfo, i) => {
         return (
-          <CircleMarker radius={5} center={[gpsInfo.coordinates.latitude, gpsInfo.coordinates.longitude]}>
+          <CircleMarker
+            radius={5}
+            center={[gpsInfo.coordinates.latitude, gpsInfo.coordinates.longitude]}
+            pathOptions={{color: "red"}}  // TODO: 高さ(or土被り)によって色を変えたい
+          >
             <Popup>
               <TableContainer>
                 <Table size={"small"}>
