@@ -1,5 +1,5 @@
-import React, {useEffect, useState} from "react";
-import {useMap, MapContainer, TileLayer, CircleMarker, Popup} from "react-leaflet";
+import React, {useState} from "react";
+import { MapContainer, TileLayer, CircleMarker, Popup} from "react-leaflet";
 import {PhaseSpace} from "./model";
 import {
   Paper,
@@ -13,7 +13,7 @@ import {
 } from "@mui/material";
 import {LatLngExpression} from "leaflet";
 import "leaflet/dist/leaflet.css";  // leafletのcssをインポートしないと表示が崩れる。 see https://qiita.com/honda28/items/e4c73c916e4d9b2ec279#leaflet-%E3%82%B3%E3%83%B3%E3%83%9D%E3%83%BC%E3%83%8D%E3%83%B3%E3%83%88%E3%81%AE%E4%BD%9C%E6%88%90
-import {getElevation} from "./elevation";
+import {getElevation, useElevationFromGpsInfoList} from "./elevation";
 
 type MapTileName = "OpenStreetMap" | "国土地理院標準地図" | "国土地理院淡色地図" | "国土地理院土地条件図"
 type MapTile = {
@@ -53,28 +53,33 @@ function useMapTile(initialMapTileName: MapTileName) : [MapTile, (mapTile: MapTi
 }
 
 function Markers(props: {gpsInfoList: PhaseSpace[]}){
-
+  const elevations = useElevationFromGpsInfoList(props.gpsInfoList);
   return (
     <>
       {
-      props.gpsInfoList.map((gpsInfo) => {
+      props.gpsInfoList.map((gpsInfo, i) => {
         return (
-          <CircleMarker center={[gpsInfo.coordinates.latitude, gpsInfo.coordinates.longitude]}>
+          <CircleMarker radius={2} center={[gpsInfo.coordinates.latitude, gpsInfo.coordinates.longitude]}>
             <Popup>
               <TableContainer>
                 <Table size={"small"}>
                   <TableBody>
                     <TableRow>
                       <TableCell>時刻</TableCell>
-                      <TableCell> {gpsInfo.timestamp.format("HH:mm:ss.SS")} </TableCell>
+                      <TableCell> {gpsInfo.timestamp.format("HH:mm:ss")} </TableCell>
                     </TableRow>
                     <TableRow>
                       <TableCell>GPS標高</TableCell>
-                      <TableCell> {gpsInfo.coordinates.altitude?.toFixed(2)} </TableCell>
+                      <TableCell>
+                        {gpsInfo.coordinates.altitude ? (
+                          gpsInfo.coordinates.altitude?.toFixed(2)
+                          + "±" + gpsInfo.coordinates.zAccuracy?.toFixed(2) + "m"
+                        ): "N/A"}
+                      </TableCell>
                     </TableRow>
                     <TableRow>
                       <TableCell>地面標高</TableCell>
-                      <TableCell>NA</TableCell>
+                      <TableCell> {elevations[i]} </TableCell>
                     </TableRow>
                   </TableBody>
                 </Table>
