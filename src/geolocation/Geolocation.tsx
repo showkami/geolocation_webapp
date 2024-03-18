@@ -2,7 +2,7 @@ import React from "react";
 import {
   CircularProgress, Grid, Switch,
   Typography,
-  Accordion, AccordionSummary, AccordionDetails
+  Accordion, AccordionSummary, AccordionDetails, Snackbar
 } from "@mui/material";
 import {useGpsByInterval} from "./gps";
 import HistoricalTable from "./HistoricalTable";
@@ -12,8 +12,15 @@ import DownloadButton from "./DownloadButton";
 
 
 export default function Geolocation(){
+  const [isGpsErrorSnackbarOpen, setIsGpsErrorSnackbarOpen] = React.useState<boolean>(false);
+  const [gpsErrorMessage, setGpsErrorMessage] = React.useState<string>("");
+  const handleGpsError = (errMessage: string) => {
+    setIsGpsErrorSnackbarOpen(true);
+    setGpsErrorMessage(errMessage);
+  }
+
   const [isContinueFetching, setIsContinueFetching] = React.useState<boolean>(false);
-  const [isGpsFetching, gpsFetchStartTime, gpsInfoList] = useGpsByInterval(isContinueFetching);
+  const [isGpsFetching, gpsFetchStartTime, gpsInfoList] = useGpsByInterval(isContinueFetching, handleGpsError);
 
   return (
 
@@ -63,6 +70,11 @@ export default function Geolocation(){
         </AccordionDetails>
       </Accordion>
 
+      <Snackbar
+        open={isGpsErrorSnackbarOpen}
+        autoHideDuration={1000}
+        message={gpsErrorMessage}
+      />
     </div>
   )
 }

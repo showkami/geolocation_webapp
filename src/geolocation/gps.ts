@@ -2,9 +2,10 @@ import {useEffect, useState} from "react";
 import moment from "moment/moment";
 import {PhaseSpace} from "./model";
 
-async function fetchGpsCallback(setIsFetching:Function, setFetchStartTime:Function, setGpsInfo:Function) {
+async function fetchGpsCallback(setIsFetching:Function, setFetchStartTime:Function, setGpsInfo:Function, handleGpsError:Function = ()=>{}) {
   setIsFetching(true);
-  setFetchStartTime(moment());
+  const fetchStartTime = moment();
+  setFetchStartTime(fetchStartTime);
   navigator.geolocation.getCurrentPosition(
     (position) => {
       const gottenGpsInfo: PhaseSpace = {
@@ -25,12 +26,22 @@ async function fetchGpsCallback(setIsFetching:Function, setFetchStartTime:Functi
       setFetchStartTime(undefined);
       setGpsInfo(gottenGpsInfo);
     },
-    (err)=>{},
-    { enableHighAccuracy: true }
+    (err) => {
+      const errMessage = `GPS Fetch (since ${fetchStartTime.format("HH:mm:ss")}) Error: ${err.message}`;
+      handleGpsError(errMessage);
+      setIsFetching(false);
+      setFetchStartTime(undefined);
+      setGpsInfo(undefined);
+    },
+    {
+      enableHighAccuracy: true,
+      timeout: 5000, // 5秒以内に取得できなければエラー
+      maximumAge: 0 // キャッシュを使わない
+    }
   );
 }
 
-export function useGpsByInterval(isContinueFetching: boolean): [boolean, moment.Moment | undefined, PhaseSpace[]] {
+export function useGpsByInterval(isContinueFetching: boolean, handleGpsError:Function = ()=>{}): [boolean, moment.Moment | undefined, PhaseSpace[]] {
   const [gpsInfo, setGpsInfo] = useState<PhaseSpace | undefined>(undefined);
   const [isFetching, setIsFetching] = useState<boolean>(false);
   const [fetchStartTime, setFetchStartTime] = useState<moment.Moment | undefined>(undefined);
@@ -43,14 +54,14 @@ export function useGpsByInterval(isContinueFetching: boolean): [boolean, moment.
       function loop() {
         timerId = setTimeout(() => {
           if (isContinueFetching) {
-            fetchGpsCallback(setIsFetching, setFetchStartTime, setGpsInfo);
+            fetchGpsCallback(setIsFetching, setFetchStartTime, setGpsInfo, handleGpsError);
           }
           loop();
         }, 1000);
       }
     )();
     return () => {clearInterval(timerId);}; // 再レンダーの際にはタイマーをクリーンアップ
-  }, [isContinueFetching]);
+  }, [isContinueFetching, handleGpsError]);
 
   const [gpsInfoTimeseries, setGpsInfoTimeseries] = useState<PhaseSpace[]>([]);
   useEffect(() => {
