@@ -73,6 +73,7 @@ export default function Geolocation(){
       <Snackbar
         open={isGpsErrorSnackbarOpen}
         autoHideDuration={1000}
+        onClose={() => {setIsGpsErrorSnackbarOpen(false)}}
         message={gpsErrorMessage}
       />
     </div>
