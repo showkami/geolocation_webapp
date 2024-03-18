@@ -62,14 +62,13 @@ function Markers(props: {gpsInfoList: PhaseSpace[]}){
     .filter((altitude) => altitude !== undefined) as number[];
   const minAltitude = Math.min(...altitudesExcludeUndefined);
   const maxAltitude = Math.max(...altitudesExcludeUndefined);
+  const toHexWith0Pad = (v_10: number) => {return Math.ceil(v_10).toString(16).padStart(2, "0")};
   const getMarkerColor = (altitude: number | undefined): string => {
     if (altitude === undefined) {
-      return '#ffffff';
+      return '#888888';
     } else {
       const ratio = (altitude - minAltitude) / (maxAltitude - minAltitude);
-      const colorString = '#ff' + ((1 - ratio) * 256).toString(16) + ((1 - ratio) * 256).toString(16);
-      console.log(colorString);
-      return colorString;
+      return  '#ff' + toHexWith0Pad((1 - ratio) * 255) + toHexWith0Pad((1 - ratio) * 255);
     }
   }
 
