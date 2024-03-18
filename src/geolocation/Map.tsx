@@ -101,20 +101,20 @@ function Markers(props: {gpsInfoList: PhaseSpace[]}){
                       <TableCell>GPS標高</TableCell>
                       <TableCell>
                         {altitude ? (
-                          altitude.toFixed(2) + "±" + gpsInfo.coordinates.zAccuracy?.toFixed(2) + "m"
+                          altitude.toFixed(2) + " ±" + gpsInfo.coordinates.zAccuracy?.toFixed(2) + "m"
                         ): "N/A"}
                       </TableCell>
                     </TableRow>
                     <TableRow>
                       <TableCell>地面標高</TableCell>
-                      <TableCell> {elevation ? elevation.toFixed(2) + "m" : "N/A"} </TableCell>
+                      <TableCell> {elevation ? elevation.toFixed(1) + "m" : "N/A"} </TableCell>
                     </TableRow>
                     <TableRow>
                       <TableCell>土被り</TableCell>
                       <TableCell>
                         {
                           (elevation && altitude) ?
-                            (elevation - altitude).toFixed(2) + "m"
+                            (altitude - elevation).toFixed(1) + "m"
                             : "N/A"
                         }
                       </TableCell>
