@@ -12,6 +12,7 @@ import {
 import {Line} from "react-chartjs-2";
 import {PhaseSpace} from "./model";
 import {useElevationFromGpsInfoList} from "./elevation";
+import {Switch} from "@mui/material";
 
 ChartJS.register(
   CategoryScale,
@@ -28,12 +29,15 @@ type AltitudeChartProps = {
   gpsInfoList: PhaseSpace[]
 }
 
-const getChartData = (gpsInfoList: PhaseSpace[]): ChartData<"line"> => {
+const getChartData = (gpsInfoList: PhaseSpace[], isShowLast60Records: boolean): ChartData<"line"> => {
   const timestamps = gpsInfoList.map((gpsInfo) => {
     return gpsInfo.timestamp.format("HH:mm:ss");
   });
 
-  const altitudesWithAccuracy = gpsInfoList.map(
+  const gpsInfoListFiltered = isShowLast60Records ? gpsInfoList.slice(-60) : gpsInfoList;
+  const timestampsFiltered = isShowLast60Records ? timestamps.slice(-60) : timestamps;
+
+  const altitudesWithAccuracy = gpsInfoListFiltered.map(
     (gpsInfo) => {
       if (gpsInfo.coordinates.altitude && gpsInfo.coordinates.zAccuracy){
         return {
@@ -53,7 +57,7 @@ const getChartData = (gpsInfoList: PhaseSpace[]): ChartData<"line"> => {
   );
 
   return {
-    labels: timestamps, // x軸のラベルの配列
+    labels: timestampsFiltered, // x軸のラベルの配列
     datasets: [
       {
         label: "GPS Altitude", // 凡例
@@ -99,11 +103,20 @@ const useChartDataWithElevation = (
 export default function AltitudeChart(props: AltitudeChartProps){
   const sortAscByTime = (a: PhaseSpace, b: PhaseSpace) => {return a.timestamp.diff(b.timestamp)};
   const gpsInfoList: PhaseSpace[] = props.gpsInfoList.sort(sortAscByTime);
-  const chartData = getChartData(gpsInfoList);
+
+  const [isShowLast60Records, setIsShowLast60Records] = React.useState<boolean>(false);
+  const chartData = getChartData(gpsInfoList, isShowLast60Records);
 
   const chartDataWithElevation = useChartDataWithElevation(chartData, gpsInfoList);
 
   return (
-    <Line data={chartDataWithElevation} options={{animation: false}}></Line>
+    <>
+      Show last 60 records?
+      <Switch
+        checked={isShowLast60Records}
+        onChange={(e) => {setIsShowLast60Records(e.target.checked)}}
+      />
+      <Line data={chartDataWithElevation} options={{animation: false}}></Line>
+    </>
   )
 }
