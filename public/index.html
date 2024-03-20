@@ -1,9 +1,25 @@
 <!DOCTYPE html>
 <html lang="ja">
-  <head>
-    <meta charset="utf-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <title>Geolocation Webapp</title>
+    <head prefix="og: http://ogp.me/ns# fb: http://ogp.me/ns/fb# website: http://ogp.me/ns/website#">
+
+        <meta charset="utf-8" />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+        <title>Geolocation Webapp</title>
+
+        <link rel="apple-touch-icon" href="%PUBLIC_URL%/map_icon.png" />
+        <link rel="manifest" href="%PUBLIC_URL%/manifest.json" />
+
+        <!-- OGP (LINEとかでURLを貼った時に表示されるやつ) の設定 -->
+        <meta property="og:url" content="https://geolocation.showkami.com" />
+        <meta property="og:type" content="website" />
+        <meta property="og:title" content="Geolocation webapp" />
+        <meta property="og:description" content="GPS情報の取得、高さの表示" />
+        <meta property="og:image" content="%PUBLIC_URL%/map_icon.png" />
+        <meta property="og:site_name" content="Geolocation webapp" />
+
+        <!-- Font -->
+        <link href="https://fonts.googleapis.com/css2?family=M+PLUS+1:wght@100..900&display=swap" rel="stylesheet">
+
   </head>
   <body>
     <noscript>You need to enable JavaScript to run this app.</noscript>
