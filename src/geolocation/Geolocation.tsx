@@ -1,6 +1,5 @@
 import React from "react";
 import {
-  CircularProgress, Grid, Switch,
   Typography,
   Accordion, AccordionSummary, AccordionDetails, Snackbar
 } from "@mui/material";
@@ -9,6 +8,7 @@ import HistoricalTable from "./HistoricalTable";
 import AltitudeChart from "./AltitudeChart";
 import Map from "./Map";
 import DownloadButton from "./DownloadButton";
+import GpsFetchController from "./GpsFetchController";
 
 
 export default function Geolocation(){
@@ -19,27 +19,19 @@ export default function Geolocation(){
     setGpsErrorMessage(errMessage);
   }
 
-  const [isContinueFetching, setIsContinueFetching] = React.useState<boolean>(false);
-  const [isGpsFetching, gpsFetchStartTime, gpsInfoList] = useGpsByInterval(isContinueFetching, handleGpsError);
+  const [isWatchGps, setIsWatchGps] = React.useState<boolean>(false);
+  const [isGpsFetching, gpsFetchStartTime, gpsInfoList] = useGpsByInterval(isWatchGps, handleGpsError);
+  const toggleWatchStatus = () => {setIsWatchGps((prev)=>!prev)};
 
   return (
 
     <div>
-      <Switch
-        checked={isContinueFetching}
-        onChange={(e) => {setIsContinueFetching(e.target.checked)}}
+      <GpsFetchController
+        isWatchGps={isWatchGps}
+        toggleWatchStatus={toggleWatchStatus}
+        isGpsFetching={isGpsFetching}
+        gpsFetchStartTime={gpsFetchStartTime}
       />
-
-      {
-        <Grid container>
-          <Grid item xs={2}>
-            {isGpsFetching ? <CircularProgress /> : <CircularProgress variant={"determinate"} value={100}/>}
-          </Grid>
-          <Grid item xs={10}>
-            {gpsFetchStartTime ? <Typography>Getting location since {gpsFetchStartTime.format("HH:MM:SS")}</Typography> : <></>}
-          </Grid>
-        </Grid>
-      }
 
       <DownloadButton gpsInfoList={gpsInfoList} />
 
